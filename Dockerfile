@@ -1,5 +1,9 @@
-FROM openjdk:8-jre-alpine
-COPY ./target/hola-docker-1.0.0-SNAPSHOT.jar /usr/src/hola/
-WORKDIR /usr/src/hola
+FROM maven:3.5.2-alpine
+WORKDIR /usr/src/java-code
+COPY . /usr/src/java-code/
+RUN mvn package
+
+WORKDIR /usr/src/java-app
+RUN cp /usr/src/java-code/target/*.jar ./app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "hola-docker-1.0.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
